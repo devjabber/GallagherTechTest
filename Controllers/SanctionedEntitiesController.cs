@@ -1,4 +1,5 @@
-﻿using ajgre_technical_interview.Services;
+﻿using ajgre_technical_interview.Models;
+using ajgre_technical_interview.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ajgre_technical_interview.Controllers
@@ -7,11 +8,11 @@ namespace ajgre_technical_interview.Controllers
     [Route("api/sanctioned-entities")]
     public class SanctionedEntitiesController : ControllerBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly ISanctionedEntitiesService _sanctionedEntitiesService;
 
-        public SanctionedEntitiesController(IDatabaseService databaseService)
+        public SanctionedEntitiesController(ISanctionedEntitiesService sanctionedEntitiesService)
         {
-            _databaseService = databaseService;
+            _sanctionedEntitiesService = sanctionedEntitiesService;
         }
 
 
@@ -20,8 +21,31 @@ namespace ajgre_technical_interview.Controllers
         {
             try
             {
-                var entities = await _databaseService.GetSanctionedEntitiesAsync();
+                var entities = await _sanctionedEntitiesService.GetSanctionedEntitiesAsync();
                 return Ok(entities);
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSanctionedEntity([FromBody]SanctionedEntity sanctionedEntity)
+        {
+            try
+            {
+                var entities = await _sanctionedEntitiesService.CreateSanctionedEntityAsync(sanctionedEntity);
+                return Ok(entities);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest($"Invalid input: {ex.Message}");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict($"Duplicate entity detected: {ex.Message}");
             }
             catch (Exception ex)
             {
