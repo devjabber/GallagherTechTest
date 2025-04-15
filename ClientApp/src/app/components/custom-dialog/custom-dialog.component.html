@@ -1,0 +1,8 @@
+<div class="custom-modal" *ngIf="isVisible">
+    <div class="custom-modal-content">
+      <h2>{{ title }}</h2>
+      <ng-content></ng-content> <!-- Allows flexible content inside modal -->
+      <button (click)="close()" class="btn btn-outline-secondary me-2">Close</button>
+    </div>
+  </div>
+  

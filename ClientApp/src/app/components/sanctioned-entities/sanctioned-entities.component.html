@@ -19,3 +19,7 @@
     </tr>
     </tbody>
 </table>
+
+<button (click)="openDialog()" class="btn btn-outline-secondary me-2">Add Sanctioned Entity</button>
+
+<app-sanctioned-entity-form *ngIf="isDialogVisible" (entityAdded)="addEntity($event)" (closeDialog)="closeDialog()"></app-sanctioned-entity-form>

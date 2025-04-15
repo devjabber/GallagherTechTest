@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -10,7 +10,8 @@ import { HomeComponent } from './components/home/home.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { SanctionedEntitiesComponent } from './components/sanctioned-entities/sanctioned-entities.component';
 import { JumbotronCounterComponent } from './components/jumbotron-counter/jumbotron-counter.component';
-
+import { SanctionedEntityFormComponent } from './components/sanctioned-entity-form/sanctioned-entity-form.component';
+import { CustomDialogComponent } from './components/custom-dialog/custom-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +20,15 @@ import { JumbotronCounterComponent } from './components/jumbotron-counter/jumbot
     HomeComponent,
     CounterComponent,
     SanctionedEntitiesComponent,
-    JumbotronCounterComponent
+    JumbotronCounterComponent,
+    SanctionedEntityFormComponent,
+    CustomDialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
