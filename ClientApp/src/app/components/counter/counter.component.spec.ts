@@ -1,36 +1,43 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CounterComponent } from './counter.component';
+import { CounterService } from 'src/app/services/counter.service';
+import { of } from 'rxjs';
 
 describe('CounterComponent', () => {
   let component: CounterComponent;
   let fixture: ComponentFixture<CounterComponent>;
+  let mockCounterService: jasmine.SpyObj<CounterService>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CounterComponent ]
-    })
-    .compileComponents();
-  });
+  beforeEach(async () => {
+    mockCounterService = jasmine.createSpyObj('CounterService', ['counter$', 'incrementCounter']);
 
-  beforeEach(() => {
+    await TestBed.configureTestingModule({
+      declarations: [CounterComponent],
+      providers: [{ provide: CounterService, useValue: mockCounterService }]
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CounterComponent);
     component = fixture.componentInstance;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should subscribe to counter$ on init', () => {
+    // Arrange
+    mockCounterService.counter$ = of(5);
     fixture.detectChanges();
+
+    // Act & Assert
+    expect(component.currentCount).toBe(5);
   });
 
-  it('should display a title', () => {
-    const titleText = fixture.nativeElement.querySelector('h1').textContent;
-    expect(titleText).toEqual('Counter');
-  });
+  it('should call incrementCounter on service when incrementCounter method is triggered', () => {
+    // Act
+    component.incrementCounter();
 
-  it('should start with count 0, then increments by 1 when clicked', () => {
-    const countElement = fixture.nativeElement.querySelector('strong');
-    expect(countElement.textContent).toEqual('0');
-
-    const incrementButton = fixture.nativeElement.querySelector('button');
-    incrementButton.click();
-    fixture.detectChanges();
-    expect(countElement.textContent).toEqual('1');
-  });
+    // Assert
+    expect(mockCounterService.incrementCounter).toHaveBeenCalled();
+  });  
 });

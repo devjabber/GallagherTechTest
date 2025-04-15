@@ -15,6 +15,6 @@ export class CounterService {
   }
 
   incrementCounter(): void {
-    this.counterSubject.next(this.getCounter() + 1); // Directly update BehaviorSubject
+    this.counterSubject.next(this.getCounter() + 1);
   }
 }
